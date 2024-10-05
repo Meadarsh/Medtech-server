@@ -6,7 +6,8 @@
   "scripts": {
     "start": "ts-node-dev --respawn ./index.ts",
     "build": "tsc",
-    "serve": "node dist/index.js"
+    "serve": "node dist/index.js",
+    "deploy": "npm run build && npm run serve"
   },
   "keywords": [],
   "author": "",

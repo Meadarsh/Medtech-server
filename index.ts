@@ -23,14 +23,14 @@ enum ConversationType {
 }
 
 app.use(cors({
-    origin: '*',
+    origin: '192.168.1.5',
     methods: ['GET', 'POST'],
     credentials: true,
 }));
 
 const io = new Server(server, {
     cors: {
-        origin: '*',
+        origin: '192.168.1.5',
         methods: ['GET', 'POST'],
         credentials: true,
     },

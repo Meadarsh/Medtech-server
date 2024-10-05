@@ -51,6 +51,14 @@ if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
 
+app.get("/",async(req, res) => {
+    try {
+        res.status(201).json({ error: 'Api is running' });
+    } catch (error) {
+        res.status(500).json({ error: 'Not working' });
+    }
+})
+
 // Configure Multer for disk storage
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {

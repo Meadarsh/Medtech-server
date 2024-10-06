@@ -23,13 +23,13 @@ enum ConversationType {
 }
 
 app.use(cors({
-    origin: ['https://kaustubhamedtech.vercel.app','http://103.160.27.133'],
+    origin:'*',
     credentials: true,
 }));
 
 const io = new Server(server, {
     cors: {
-        origin:[ 'https://kaustubhamedtech.vercel.app','http://103.160.27.133'],
+        origin:'*',
         credentials: true,
     },
 });
@@ -600,6 +600,6 @@ const roomId =conversation.type === "COMMUNITY"
 
 // Start the server
 const PORT = process.env.PORT || 8000;
-server.listen(PORT, () => {
+server.listen(PORT,'0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
 });

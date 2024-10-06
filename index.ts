@@ -23,13 +23,13 @@ enum ConversationType {
 }
 
 app.use(cors({
-    origin: 'https://kaustubhamedtech.vercel.app',
+    origin: ['https://kaustubhamedtech.vercel.app','http://103.160.27.133'],
     credentials: true,
 }));
 
 const io = new Server(server, {
     cors: {
-        origin: 'https://kaustubhamedtech.vercel.app',
+        origin:[ 'https://kaustubhamedtech.vercel.app','http://103.160.27.133'],
         credentials: true,
     },
 });

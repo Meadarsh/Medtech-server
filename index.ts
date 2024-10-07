@@ -23,15 +23,15 @@ enum ConversationType {
 }
 
 app.use(cors({
-    origin:'*',
-    methods: ["GET", "POST"],
+    origin: '*',
+    methods: ['GET', 'POST'],
     credentials: true,
 }));
 
 const io = new Server(server, {
     cors: {
-        origin:'*',
-        methods: ["GET", "POST"],
+        origin: '*',
+        methods: ['GET', 'POST'],
         credentials: true,
     },
 });
@@ -45,12 +45,7 @@ cloudinary.v2.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Create uploads directory if it doesn't exist
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
-
+//For checkking running state
 app.get("/",async(req, res) => {
     try {
         res.status(201).json({ success: 'Api is running' });
@@ -58,6 +53,12 @@ app.get("/",async(req, res) => {
         res.status(500).json({ error: 'Not working' });
     }
 })
+
+// Create uploads directory if it doesn't exist
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+}
 
 // Configure Multer for disk storage
 const storage = multer.diskStorage({
@@ -372,7 +373,11 @@ io.on('connection', (socket) => {
             socket.emit('error', { message: 'Error sending message, please try again later.' });
         }
     });
-    
+    socket.on("onLeaveroom",(roomId)=>{
+        console.log("leaving",roomId)
+        socket.leave(roomId)
+    })
+
     // Add this event handler for joining community rooms
     socket.on('joinCommunity', async (data) => {
         const { conversationId, userId } = data;
@@ -569,7 +574,15 @@ const roomId =conversation.type === "COMMUNITY"
 		io.to(data.to).emit("callAccepted", data.signal)
 	})
 
+    socket.on('toggleRemoteVideo', ({ to, videoOff }) => {
+        // Emit the toggle event to the specified user
+        socket.to(to).emit('toggleVideo', { videoOff });
+      })
+    
+      socket.on('toggleRemoteAudio', ({ to, audioMuted }) => {
+        socket.to(to).emit('toggleAudio', { audioMuted });
 
+      }); 
 
 
     // Disconnect event

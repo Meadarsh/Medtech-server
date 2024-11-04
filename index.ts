@@ -506,7 +506,7 @@ const roomId =conversation.type === "COMMUNITY"
     });
 
 
-    socket.on('markAsSeen', async ({ userId, conversationId, lastSeenMessageId }) => {
+    socket.on('markAsSeen', async ({ userId, conversationId, lastSeenMessageId,roomId }) => {
         try {
             const unseenMessages = await prisma.message.findMany({
                 where: {
@@ -539,7 +539,7 @@ const roomId =conversation.type === "COMMUNITY"
                 }
             });
     
-            io.to(`room_${conversationId}`).emit('messagesSeen', { userId, lastSeenMessageId, updatedMessages });
+            io.to(roomId).emit('messagesSeen', { userId, lastSeenMessageId, updatedMessages });
         } catch (error) {
             console.error('Error marking messages as seen:', error);
             socket.emit('error', { message: 'Error updating seen status, please try again later.' });
